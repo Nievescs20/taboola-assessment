@@ -64,3 +64,63 @@ async function getData() {
     console.log(error);
   }
 }
+
+function createItem(itemObj) {
+  const item = document.createElement("article");
+  item.appendChild(createItemAnchor(itemObj));
+  item.className = "article";
+  return item;
+}
+
+function createItemAnchor(itemObj) {
+  const anchor = document.createElement("a");
+  anchor.href = itemObj.url;
+  anchor.className = "anchor";
+  if (itemObj.categories) {
+    anchor.appendChild(createCategory(itemObj));
+  }
+  anchor.appendChild(createImage(itemObj));
+  anchor.appendChild(createName(itemObj));
+  anchor.appendChild(createBranding(itemObj));
+  return anchor;
+}
+
+function createImage(itemObj) {
+  const image = document.createElement("img");
+  image.className = "image";
+  image.src = itemObj.thumbnail[0].url;
+  return image;
+}
+
+function createName(itemObj) {
+  const name = document.createElement("p");
+  name.className = "name";
+  name.innerText = itemObj.name;
+  return name;
+}
+
+function createBranding(itemObj) {
+  const brand = document.createElement("p");
+  brand.className = "brand";
+  brand.innerText = itemObj.branding;
+  return brand;
+}
+
+function createCategory(itemObj) {
+  const category = document.createElement("p");
+  category.className = "catergory";
+  category.innerText = itemObj.categories[0];
+  return category;
+}
+
+async function generateWidget() {
+  const articles = await getData();
+  const [widgetContainer] = document.getElementsByTagName("main");
+  articles.forEach((article) => {
+    widgetContainer.appendChild(createItem(article));
+  });
+  // container.innerText = "Hello";
+  // console.log(articles);
+}
+
+generateWidget();
