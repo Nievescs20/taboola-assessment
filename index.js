@@ -77,7 +77,7 @@ function createItemAnchor(itemObj) {
   anchor.href = itemObj.url;
   anchor.className = "anchor";
   if (itemObj.categories) {
-    anchor.appendChild(createCategory(itemObj));
+    // anchor.appendChild(createCategory(itemObj));
   }
   anchor.appendChild(createImage(itemObj));
   anchor.appendChild(createName(itemObj));
@@ -89,29 +89,39 @@ function createImage(itemObj) {
   const image = document.createElement("img");
   image.className = "image";
   image.src = itemObj.thumbnail[0].url;
+  image.alt = itemObj.description || itemObj.name;
   return image;
 }
 
 function createName(itemObj) {
-  const name = document.createElement("p");
+  const name = document.createElement("strong");
   name.className = "name";
-  name.innerText = itemObj.name;
+  const text = itemObj.name;
+  if (text.length > 137) {
+    name.innerText = text.slice(0, 138) + "...";
+  } else {
+    name.innerText = text;
+  }
   return name;
 }
 
 function createBranding(itemObj) {
   const brand = document.createElement("p");
   brand.className = "brand";
-  brand.innerText = itemObj.branding;
+  if (itemObj.categories && itemObj.categories.length > 0) {
+    brand.innerText = `${itemObj.categories[0]} | ${itemObj.branding}`;
+  } else {
+    brand.innerText = itemObj.branding;
+  }
   return brand;
 }
 
-function createCategory(itemObj) {
-  const category = document.createElement("p");
-  category.className = "catergory";
-  category.innerText = itemObj.categories[0];
-  return category;
-}
+// function createCategory(itemObj) {
+//   const category = document.createElement("p");
+//   category.className = "catergory";
+//   category.innerText = itemObj.categories[0];
+//   return category;
+// }
 
 async function generateWidget() {
   const articles = await getData();

@@ -1,0 +1,50 @@
+.submission {
+  padding: 3% 0% 3% 0%;
+}
+
+#widget {
+  width: 60%;
+  padding: 0% 5% 5% 5%;
+  margin: 0 auto;
+}
+
+#widget>main {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  justify-content: center;
+  justify-items: center;
+  align-items: start;
+  gap: 1rem;
+}
+
+.anchor>* {
+  width: 100%;
+  color: black;
+}
+
+.article>a {
+  text-decoration: none;
+}
+
+.taboola-container {
+  display: flex;
+  margin: 0 auto;
+  padding: 0 1% 1% 1%;
+  justify-content: end;
+}
+
+.taboola-anchor {
+  color:black;
+}
+
+.taboola {
+  height: 1rem;
+  width: 4rem;
+}
+
+@media (max-width: 414px) {
+  #widget>main {
+    grid-template-columns: 1fr;
+  }
+}
+
