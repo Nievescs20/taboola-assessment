@@ -8,6 +8,11 @@ width: 60%;
 
 .submission>a {
   padding-left: 20%;
+  display: -webkit-box;
+  max-width: 100%;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .taboola-main-div {

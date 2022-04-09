@@ -135,7 +135,7 @@ async function generateWidget() {
   const mainDiv = createDiv("taboola-main-div");
   const headerDiv = mainDiv.appendChild(createDiv("taboola-header-sponsor"));
 
-  //if user is located in the USA then Header will be displayed in English, if not then Spanish
+  //***BONUS TASK*** if user is located in the USA then Header will be displayed in English, if not then Spanish ***BONUS TASK***
   if (userCountry === "US") {
     headerDiv.appendChild(createDiv("you-may-like", "Articles You May Like"));
   } else {
