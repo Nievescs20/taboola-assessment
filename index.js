@@ -1,3 +1,18 @@
+let userCountry;
+//Use IP address to determine where the user is located
+async function getCountry() {
+  const response = await fetch("https://ipapi.co/8.8.8.8/json/");
+  try {
+    if (response.ok) {
+      const data = await response.json();
+      userCountry = data.country;
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+getCountry();
+
 async function getData() {
   const url =
     "https://api.taboola.com/2.0/json/apitestaccount/recommendations.get";
@@ -116,9 +131,19 @@ function createImg(className, imageURL) {
 
 async function generateWidget() {
   const articles = await getData();
+
   const mainDiv = createDiv("taboola-main-div");
   const headerDiv = mainDiv.appendChild(createDiv("taboola-header-sponsor"));
-  headerDiv.appendChild(createDiv("you-may-like", "Articles You May Like"));
+
+  //if user is located in the USA then Header will be displayed in English, if not then Spanish
+  if (userCountry === "US") {
+    headerDiv.appendChild(createDiv("you-may-like", "Articles You May Like"));
+  } else {
+    headerDiv.appendChild(
+      createDiv("you-may-like", "Articulos Que Te Pueden Gustar")
+    );
+  }
+
   const taboolaAnchor = headerDiv.appendChild(
     createAnchor(
       "taboola-sponsor-anchor",
@@ -126,19 +151,23 @@ async function generateWidget() {
       "sponsored links by"
     )
   );
+
   taboolaAnchor.appendChild(
     createImg(
       "taboola-logo",
       "https://www.taboola.com/wp-content/uploads/2021/11/taboola_logo_dark_blue-2.png"
     )
   );
+
   const articlesContainer = mainDiv.appendChild(
     createDiv("taboola-article-container")
   );
+
   const [widgetContainer] = document.getElementsByTagName("main");
   articles.forEach((article) => {
     articlesContainer.appendChild(createItem(article));
   });
+
   widgetContainer.appendChild(mainDiv);
 }
 
