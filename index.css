@@ -2,13 +2,17 @@
   padding: 3% 0% 3% 0%;
 }
 
-#widget {
+.submission>a {
+  margin-left: 3%;
+}
+
+.taboola-main-div {
   width: 60%;
   padding: 0% 5% 5% 5%;
   margin: 0 auto;
 }
 
-#widget>main {
+.taboola-article-container {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   justify-content: center;
@@ -17,12 +21,24 @@
   gap: 1rem;
 }
 
-.anchor>* {
+.taboola-anchor>* {
   width: 100%;
+}
+
+.taboola-name {
+  display: -webkit-box;
+  max-width: 100%;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
   color: black;
 }
 
-.article>a {
+.taboola-brand {
+  color: gray;
+}
+
+.taboola-article>a {
   text-decoration: none;
 }
 
@@ -33,17 +49,28 @@
   justify-content: end;
 }
 
-.taboola-anchor {
+.taboola-header-sponsor>a {
   color:black;
+  text-decoration: none;
 }
 
-.taboola {
+.taboola-logo {
   height: 1rem;
   width: 4rem;
 }
 
+.taboola-header-sponsor {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 1%;
+}
+
+.you-may-like {
+  font-weight: bold;
+}
+
 @media (max-width: 414px) {
-  #widget>main {
+  .taboola-article-container {
     grid-template-columns: 1fr;
   }
 }

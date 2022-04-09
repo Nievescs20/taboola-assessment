@@ -1,19 +1,3 @@
-const deviceType = () => {
-  const ua = navigator.userAgent;
-  if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) {
-    return "tablet";
-  } else if (
-    /Mobile|Android|iP(hone|od)|IEMobile|BlackBerry|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(
-      ua
-    )
-  ) {
-    return "mobile";
-  }
-  return "desktop";
-};
-
-console.log(deviceType());
-
 async function getData() {
   const url =
     "https://api.taboola.com/2.0/json/apitestaccount/recommendations.get";
@@ -68,17 +52,14 @@ async function getData() {
 function createItem(itemObj) {
   const item = document.createElement("article");
   item.appendChild(createItemAnchor(itemObj));
-  item.className = "article";
+  item.className = "taboola-article";
   return item;
 }
 
 function createItemAnchor(itemObj) {
   const anchor = document.createElement("a");
   anchor.href = itemObj.url;
-  anchor.className = "anchor";
-  if (itemObj.categories) {
-    // anchor.appendChild(createCategory(itemObj));
-  }
+  anchor.className = "taboola-anchor";
   anchor.appendChild(createImage(itemObj));
   anchor.appendChild(createName(itemObj));
   anchor.appendChild(createBranding(itemObj));
@@ -87,7 +68,7 @@ function createItemAnchor(itemObj) {
 
 function createImage(itemObj) {
   const image = document.createElement("img");
-  image.className = "image";
+  image.className = "taboola-image";
   image.src = itemObj.thumbnail[0].url;
   image.alt = itemObj.description || itemObj.name;
   return image;
@@ -95,19 +76,14 @@ function createImage(itemObj) {
 
 function createName(itemObj) {
   const name = document.createElement("strong");
-  name.className = "name";
-  const text = itemObj.name;
-  if (text.length > 137) {
-    name.innerText = text.slice(0, 138) + "...";
-  } else {
-    name.innerText = text;
-  }
+  name.className = "taboola-name";
+  name.innerText = itemObj.name;
   return name;
 }
 
 function createBranding(itemObj) {
   const brand = document.createElement("p");
-  brand.className = "brand";
+  brand.className = "taboola-brand";
   if (itemObj.categories && itemObj.categories.length > 0) {
     brand.innerText = `${itemObj.categories[0]} | ${itemObj.branding}`;
   } else {
@@ -116,21 +92,54 @@ function createBranding(itemObj) {
   return brand;
 }
 
-// function createCategory(itemObj) {
-//   const category = document.createElement("p");
-//   category.className = "catergory";
-//   category.innerText = itemObj.categories[0];
-//   return category;
-// }
+function createDiv(className, innerText = "") {
+  const div = document.createElement("div");
+  div.className = className;
+  div.innerText = innerText;
+  return div;
+}
+
+function createAnchor(className, href, innerText = "") {
+  const anchor = document.createElement("a");
+  anchor.className = className;
+  anchor.href = href;
+  anchor.innerText = innerText;
+  return anchor;
+}
+
+function createImg(className, imageURL) {
+  const image = document.createElement("img");
+  image.className = className;
+  image.src = imageURL;
+  return image;
+}
 
 async function generateWidget() {
   const articles = await getData();
+  const mainDiv = createDiv("taboola-main-div");
+  const headerDiv = mainDiv.appendChild(createDiv("taboola-header-sponsor"));
+  headerDiv.appendChild(createDiv("you-may-like", "Articles You May Like"));
+  const taboolaAnchor = headerDiv.appendChild(
+    createAnchor(
+      "taboola-sponsor-anchor",
+      "https://taboola.com",
+      "sponsored links by"
+    )
+  );
+  taboolaAnchor.appendChild(
+    createImg(
+      "taboola-logo",
+      "https://www.taboola.com/wp-content/uploads/2021/11/taboola_logo_dark_blue-2.png"
+    )
+  );
+  const articlesContainer = mainDiv.appendChild(
+    createDiv("taboola-article-container")
+  );
   const [widgetContainer] = document.getElementsByTagName("main");
   articles.forEach((article) => {
-    widgetContainer.appendChild(createItem(article));
+    articlesContainer.appendChild(createItem(article));
   });
-  // container.innerText = "Hello";
-  // console.log(articles);
+  widgetContainer.appendChild(mainDiv);
 }
 
 generateWidget();
